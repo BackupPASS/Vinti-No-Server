@@ -21,7 +21,6 @@ function applyStatus(status) {
   statusPill.classList.remove('danger', 'ok', 'warning', 'neutral');
 
   let label = 'Status: ' + status.charAt(0).toUpperCase() + status.slice(1);
-
   let subtitle = 'Vinti status is unknown.';
 
   switch (s) {
@@ -63,7 +62,6 @@ function applyStatus(status) {
   }
 }
 
-
 async function syncStatusFromStatusCentre() {
   try {
     const res = await fetch('https://backuppass.github.io/Status-Centre/');
@@ -72,21 +70,41 @@ async function syncStatusFromStatusCentre() {
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');
 
-    const tagline = doc.querySelector('.status-row .tagline') || doc.querySelector('.tagline');
-    if (!tagline) {
-      applyStatus('unknown');
-      return;
+    let statusWord = 'unknown';
+    let reasonText = '';
+
+    const vintiCard = Array.from(doc.querySelectorAll('.card')).find(card => {
+      const title = card.querySelector('h2');
+      return title && title.textContent.trim().toLowerCase() === 'vinti';
+    });
+
+    if (vintiCard) {
+      const windowsRow = Array.from(vintiCard.querySelectorAll('.status-row')).find(row => {
+        const osHeading = row.querySelector('h3');
+        return osHeading && osHeading.textContent.trim().toLowerCase() === 'windows';
+      });
+
+      if (windowsRow) {
+        const statusPillEl = windowsRow.querySelector('.pill');
+        if (statusPillEl) {
+          statusWord = statusPillEl.textContent.trim();
+        }
+
+        const taglineEl = windowsRow.querySelector('.tagline');
+        if (taglineEl) {
+          reasonText = taglineEl.textContent.trim();
+        }
+      }
     }
-
-    const text = tagline.textContent || '';
-
-    const match = text.match(/This app is\s+([A-Za-z]+)/i);
-    const statusWord = match ? match[1] : 'unknown';
 
     applyStatus(statusWord);
 
     if (reasonPill) {
-      reasonPill.textContent = text.trim();
+      if (reasonText) {
+        reasonPill.textContent = reasonText;
+      } else {
+        reasonPill.textContent = 'Reason: Unable to determine status reason.';
+      }
     }
   } catch (err) {
     console.error('Failed to sync status from Status Centre:', err);
@@ -102,12 +120,11 @@ async function syncStatusFromStatusCentre() {
 if (retryBtn && card) {
   retryBtn.addEventListener('click', () => {
     card.classList.remove('pulse');
-    void card.offsetWidth;
+    void card.offsetWidth; // force reflow
     card.classList.add('pulse');
-    updateLastCheck();
 
     setTimeout(() => {
-      location.reload();
+      syncStatusFromStatusCentre();
     }, 350);
   });
 }
@@ -115,5 +132,5 @@ if (retryBtn && card) {
 syncStatusFromStatusCentre();
 
 setInterval(() => {
-  location.reload();
-}, 60000);
+  syncStatusFromStatusCentre();
+}, 30000);
