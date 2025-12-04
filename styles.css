@@ -100,7 +100,7 @@
 
     .pill-reason{
       display:inline-flex;
-      max-width:80%
+      max-width:80%;
       align-items:center;
       gap:6px;
       padding:4px 10px;
@@ -241,5 +241,6 @@
       }
       h1{font-size:22px;}
     }
+
 
 
