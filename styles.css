@@ -97,6 +97,19 @@
       background:rgba(0,0,0,.35);
       white-space:nowrap;
     }
+
+    .pill-reason{
+      display:inline-flex;
+      max-width:80%
+      align-items:center;
+      gap:6px;
+      padding:4px 10px;
+      border-radius:999px;
+      font-size:11px;
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(0,0,0,.35);
+      white-space:nowrap;
+    }
     .pill.danger{
       border-color: rgba(239,68,68,.7);
       background: rgba(239,68,68,.18);
@@ -228,3 +241,4 @@
       }
       h1{font-size:22px;}
     }
+
