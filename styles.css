@@ -97,13 +97,22 @@
       background:rgba(0,0,0,.35);
       white-space:nowrap;
     }
+#status-pill {
+  order: 1;
+}
+
+#last-check {
+  order: 2;
+}
+
 #reason-pill {
-  max-width: 70%;        
-  flex: 0 1 70%;           
-  white-space: normal !important;  
-  text-align: left;
+  order: 3;               
+  flex: 1 1 100%;         
+  white-space: normal;    
+  text-align: center;       
   line-height: 1.3;
   word-break: break-word;
+  margin-top: 4px;          
 }
 
     .pill.danger{
@@ -237,6 +246,7 @@
       }
       h1{font-size:22px;}
     }
+
 
 
 
