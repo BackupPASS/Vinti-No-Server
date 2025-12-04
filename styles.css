@@ -97,13 +97,15 @@
       background:rgba(0,0,0,.35);
       white-space:nowrap;
     }
-   #reason-pill {
-     max-width: 320px;      
-     white-space: normal;
-     text-align: left;     
-     line-height: 1.3;
-     word-break: break-word;
-     }
+#reason-pill {
+  max-width: 70%;        
+  flex: 0 1 70%;           
+  white-space: normal !important;  
+  text-align: left;
+  line-height: 1.3;
+  word-break: break-word;
+}
+
     .pill.danger{
       border-color: rgba(239,68,68,.7);
       background: rgba(239,68,68,.18);
@@ -235,6 +237,7 @@
       }
       h1{font-size:22px;}
     }
+
 
 
 
